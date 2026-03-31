@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicativo de previsão do tempo com temas automáticos e fundo dinâmico">
+    <title>Previsão do Tempo</title>
+
+    <!-- Weather Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+
+    <link rel="icon" type="image/svg+xml" href="./assets/img/favicon.svg" />
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <div class="fundo-dinamico" id="fundoDinamico"></div>
+
+    <main class="container">
+        <header class="cabecalho">
+            <h1 class="titulo">
+                <i class="wi wi-day-sunny icone-titulo"></i>
+                Previsão do Tempo
+            </h1>
+            <button class="botao-tema" id="botaoTema" aria-label="Alternar tema">
+                <i class="wi wi-day-sunny icone-tema"></i>
+            </button>
+        </header>
+
+        <section class="secao-busca">
+            <div class="container-busca">
+                <input
+                    type="text"
+                    id="campoCidade"
+                    class="input-busca"
+                    placeholder="Digite o nome da cidade ou bairro..."
+                    autocomplete="off"
+                    aria-label="Nome da cidade"
+                >
+                <button class="botao-busca" id="botaoBusca" aria-label="Buscar">
+                    <i class="wi wi-day-sunny"></i>
+                </button>
+            </div>
+        </section>
+
+        <div class="indicador-carregamento oculto" id="indicadorCarregamento">
+            <div class="spinner"></div>
+            <p>Buscando informações...</p>
+        </div>
+
+        <div class="area-erro oculto" id="areaErro">
+            <i class="wi wi-cloud-down"></i>
+            <p class="mensagem-erro" id="mensagemErro"></p>
+            <button class="botao-tentar-novamente oculto" id="botaoTentarNovamente">
+                Tentar Novamente
+            </button>
+        </div>
+
+        <section class="area-resultados oculto" id="areaResultados">
+            <div class="cartao-clima">
+                <div class="localizacao">
+                    <i class="wi wi-location-arrow"></i>
+                    <h2 id="nomeCidade"></h2>
+                </div>
+
+                <div class="clima-principal">
+                    <i class="icone-clima" id="iconeClima"></i>
+                    <div class="temperatura-principal">
+                        <span class="temperatura" id="temperatura"></span>
+                        <span class="unidade">°C</span>
+                    </div>
+                </div>
+
+                <p class="descricao-clima" id="descricaoClima"></p>
+
+                <div class="detalhes-clima">
+                    <div class="detalhe-item">
+                        <i class="wi wi-strong-wind"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Vento</span>
+                            <span class="detalhe-valor" id="velocidadeVento"></span>
+                        </div>
+                    </div>
+
+                    <div class="detalhe-item">
+                        <i class="wi wi-humidity"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Umidade</span>
+                            <span class="detalhe-valor" id="umidade"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-hora">
+                    <i class="wi wi-time-3"></i>
+                    <span id="dataHora"></span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="rodape">
+            <p>Dados fornecidos por Open-Meteo</p>
+        </footer>
+    </main>
+
+    <script src="./assets/js/api.js"></script>
+</body>
+</html>

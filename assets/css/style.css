@@ -1,0 +1,570 @@
+/* ========== RESET E CONFIGURAÇÕES BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cor-primaria: #4a90e2;
+    --cor-secundaria: #357abd;
+    --cor-texto: #2c3e50;
+    --cor-texto-secundario: #7f8c8d;
+    --cor-fundo: #f8f9fa;
+    --cor-fundo-cartao: #ffffff;
+    --cor-borda: #e1e8ed;
+    --cor-sombra: rgba(0, 0, 0, 0.1);
+    --cor-erro: #e74c3c;
+    --cor-sucesso: #27ae60;
+
+    --espacamento-base: 8px;
+    --border-radius: 16px;
+    --transicao: all 0.3s ease;
+
+    --fonte-principal: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    font-family: var(--fonte-principal);
+    line-height: 1.5;
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition: var(--transicao);
+}
+
+/* ========== TEMA ESCURO ========== */
+body.tema-escuro {
+    --cor-texto: #ecf0f1;
+    --cor-texto-secundario: #bdc3c7;
+    --cor-fundo: #1a1a2e;
+    --cor-fundo-cartao: #16213e;
+    --cor-borda: #2c3e50;
+    --cor-sombra: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== FUNDO DINÂMICO ========== */
+.fundo-dinamico {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transition: background 0.8s ease;
+}
+
+/* Fundos para diferentes condições climáticas */
+.fundo-dinamico.dia-limpo {
+    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+}
+
+.fundo-dinamico.dia-nublado {
+    background: linear-gradient(135deg, #bdc3c7 0%, #6c7a89 100%);
+}
+
+.fundo-dinamico.dia-chuva {
+    background: linear-gradient(135deg, #4b79a1 0%, #283e51 100%);
+}
+
+.fundo-dinamico.noite-limpo {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.fundo-dinamico.noite-nublado {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+.fundo-dinamico.noite-chuva {
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+}
+
+/* ========== CONTAINER PRINCIPAL ========== */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: calc(var(--espacamento-base) * 3);
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== CABEÇALHO ========== */
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: calc(var(--espacamento-base) * 4);
+    animation: surgirSuave 0.6s ease;
+}
+
+.titulo {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base) * 2);
+}
+
+.icone-titulo {
+    font-size: 2.5rem;
+    color: var(--cor-primaria);
+}
+
+.botao-tema {
+    background: var(--cor-fundo-cartao);
+    border: 2px solid var(--cor-borda);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transicao);
+    box-shadow: 0 4px 12px var(--cor-sombra);
+}
+
+.botao-tema:hover {
+    transform: scale(1.1) rotate(15deg);
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.botao-tema:hover .icone-tema {
+    color: #ffffff;
+}
+
+.icone-tema {
+    font-size: 1.8rem;
+    color: var(--cor-primaria);
+    transition: var(--transicao);
+}
+
+/* ========== SEÇÃO DE BUSCA ========== */
+.secao-busca {
+    margin-bottom: calc(var(--espacamento-base) * 4);
+    animation: surgirSuave 0.6s ease 0.1s backwards;
+}
+
+.container-busca {
+    display: flex;
+    gap: calc(var(--espacamento-base) * 2);
+}
+
+.input-busca {
+    flex: 1;
+    padding: calc(var(--espacamento-base) * 2);
+    font-size: 1rem;
+    border: 2px solid var(--cor-borda);
+    border-radius: var(--border-radius);
+    background: var(--cor-fundo-cartao);
+    color: var(--cor-texto);
+    transition: var(--transicao);
+    font-family: var(--fonte-principal);
+}
+
+.input-busca:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+}
+
+.input-busca::placeholder {
+    color: var(--cor-texto-secundario);
+}
+
+.botao-busca {
+    background: var(--cor-primaria);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: calc(var(--espacamento-base) * 2) calc(var(--espacamento-base) * 3);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transicao);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    min-width: 60px;
+}
+
+.botao-busca:hover {
+    background: var(--cor-secundaria);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+}
+
+.botao-busca:active {
+    transform: translateY(0);
+}
+
+/* ========== INDICADOR DE CARREGAMENTO ========== */
+.indicador-carregamento {
+    text-align: center;
+    padding: calc(var(--espacamento-base) * 6);
+    animation: surgirSuave 0.4s ease;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--cor-borda);
+    border-top-color: var(--cor-primaria);
+    border-radius: 50%;
+    margin: 0 auto calc(var(--espacamento-base) * 3);
+    animation: girar 1s linear infinite;
+}
+
+.indicador-carregamento p {
+    color: var(--cor-texto);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* ========== ÁREA DE ERRO ========== */
+.area-erro {
+    background: var(--cor-fundo-cartao);
+    border: 2px solid var(--cor-erro);
+    border-radius: var(--border-radius);
+    padding: calc(var(--espacamento-base) * 4);
+    text-align: center;
+    animation: surgirSuave 0.4s ease;
+}
+
+.area-erro i {
+    font-size: 4rem;
+    color: var(--cor-erro);
+    margin-bottom: calc(var(--espacamento-base) * 2);
+}
+
+.mensagem-erro {
+    color: var(--cor-texto);
+    font-size: 1.1rem;
+    margin-bottom: calc(var(--espacamento-base) * 3);
+    line-height: 1.6;
+}
+
+.botao-tentar-novamente {
+    background: var(--cor-erro);
+    color: #ffffff;
+    border: none;
+    border-radius: calc(var(--border-radius) / 2);
+    padding: calc(var(--espacamento-base) * 2) calc(var(--espacamento-base) * 4);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transicao);
+    margin-top: calc(var(--espacamento-base) * 2);
+}
+
+.botao-tentar-novamente:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* ========== ÁREA DE RESULTADOS ========== */
+.area-resultados {
+    animation: surgirSuave 0.6s ease;
+}
+
+.cartao-clima {
+    background: var(--cor-fundo-cartao);
+    border-radius: var(--border-radius);
+    padding: calc(var(--espacamento-base) * 4);
+    box-shadow: 0 8px 32px var(--cor-sombra);
+    border: 1px solid var(--cor-borda);
+}
+
+.localizacao {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base) * 2);
+    margin-bottom: calc(var(--espacamento-base) * 4);
+}
+
+.localizacao i {
+    font-size: 1.5rem;
+    color: var(--cor-primaria);
+}
+
+.localizacao h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.clima-principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--espacamento-base) * 3);
+    margin-bottom: calc(var(--espacamento-base) * 3);
+    padding: calc(var(--espacamento-base) * 3) 0;
+}
+
+.icone-clima {
+    font-size: 6rem;
+    color: var(--cor-primaria);
+    animation: flutuarSuave 3s ease-in-out infinite;
+}
+
+.temperatura-principal {
+    display: flex;
+    align-items: flex-start;
+}
+
+.temperatura {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--cor-texto);
+}
+
+.unidade {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--cor-texto-secundario);
+    margin-left: calc(var(--espacamento-base) / 2);
+}
+
+.descricao-clima {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--cor-texto);
+    margin-bottom: calc(var(--espacamento-base) * 4);
+    text-transform: capitalize;
+}
+
+.detalhes-clima {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--espacamento-base) * 3);
+    margin-bottom: calc(var(--espacamento-base) * 4);
+    padding: calc(var(--espacamento-base) * 3) 0;
+    border-top: 1px solid var(--cor-borda);
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.detalhe-item {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base) * 2);
+}
+
+.detalhe-item i {
+    font-size: 2rem;
+    color: var(--cor-primaria);
+}
+
+.detalhe-conteudo {
+    display: flex;
+    flex-direction: column;
+}
+
+.detalhe-label {
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+    font-weight: 500;
+}
+
+.detalhe-valor {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.data-hora {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--espacamento-base) * 2);
+    color: var(--cor-texto-secundario);
+    font-size: 1rem;
+}
+
+.data-hora i {
+    font-size: 1.2rem;
+}
+
+/* ========== RODAPÉ ========== */
+.rodape {
+    margin-top: calc(var(--espacamento-base) * 6);
+    text-align: center;
+    color: var(--cor-texto-secundario);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* ========== CLASSE UTILITÁRIA ========== */
+.oculto {
+    display: none !important;
+}
+
+/* ========== ANIMAÇÕES ========== */
+@keyframes surgirSuave {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes flutuarSuave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ========== RESPONSIVIDADE ========== */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .container {
+        padding: calc(var(--espacamento-base) * 2);
+    }
+
+    .titulo {
+        font-size: 1.6rem;
+    }
+
+    .icone-titulo {
+        font-size: 2rem;
+    }
+
+    .botao-tema {
+        width: 48px;
+        height: 48px;
+    }
+
+    .icone-tema {
+        font-size: 1.5rem;
+    }
+
+    .temperatura {
+        font-size: 4rem;
+    }
+
+    .unidade {
+        font-size: 1.5rem;
+    }
+
+    .icone-clima {
+        font-size: 5rem;
+    }
+
+    .descricao-clima {
+        font-size: 1.3rem;
+    }
+
+    .detalhes-clima {
+        gap: calc(var(--espacamento-base) * 2);
+    }
+}
+
+/* Smartphones */
+@media (max-width: 480px) {
+    .container {
+        padding: calc(var(--espacamento-base) * 2);
+    }
+
+    .cabecalho {
+        margin-bottom: calc(var(--espacamento-base) * 3);
+    }
+
+    .titulo {
+        font-size: 1.4rem;
+        gap: calc(var(--espacamento-base));
+    }
+
+    .icone-titulo {
+        font-size: 1.6rem;
+    }
+
+    .botao-tema {
+        width: 44px;
+        height: 44px;
+    }
+
+    .icone-tema {
+        font-size: 1.3rem;
+    }
+
+    .container-busca {
+        flex-direction: column;
+    }
+
+    .botao-busca {
+        width: 100%;
+        padding: calc(var(--espacamento-base) * 2);
+    }
+
+    .clima-principal {
+        flex-direction: column;
+        gap: calc(var(--espacamento-base) * 2);
+    }
+
+    .temperatura {
+        font-size: 3.5rem;
+    }
+
+    .unidade {
+        font-size: 1.3rem;
+    }
+
+    .icone-clima {
+        font-size: 4rem;
+    }
+
+    .localizacao h2 {
+        font-size: 1.4rem;
+    }
+
+    .descricao-clima {
+        font-size: 1.2rem;
+    }
+
+    .detalhes-clima {
+        grid-template-columns: 1fr;
+        gap: calc(var(--espacamento-base) * 2);
+    }
+
+    .detalhe-valor {
+        font-size: 1.1rem;
+    }
+
+    .cartao-clima {
+        padding: calc(var(--espacamento-base) * 3);
+    }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 360px) {
+    .titulo {
+        font-size: 1.2rem;
+    }
+
+    .temperatura {
+        font-size: 3rem;
+    }
+
+    .icone-clima {
+        font-size: 3.5rem;
+    }
+}
