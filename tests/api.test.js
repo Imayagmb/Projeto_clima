@@ -1,5 +1,3 @@
-// tests/api.test.js
-
 // ========== MOCKS GLOBAIS — devem existir ANTES do require ==========
 // O Jest roda em Node.js, que não possui localStorage nem document.
 // GerenciadorTema e GerenciadorFundo são instanciados no carregamento
