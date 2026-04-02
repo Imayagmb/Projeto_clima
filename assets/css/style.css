@@ -16,6 +16,9 @@
     --cor-sombra: rgba(0, 0, 0, 0.1);
     --cor-erro: #e74c3c;
     --cor-sucesso: #27ae60;
+    --cor-sugestao-hover: #f0f0f0;
+    --cor-titulo: #ffffff;  /* NOVO: Cor específica para o título no tema escuro */
+
 
     --espacamento-base: 8px;
     --border-radius: 16px;
@@ -37,12 +40,22 @@ body {
 
 /* ========== TEMA ESCURO ========== */
 body.tema-escuro {
+
     --cor-texto: #ecf0f1;
     --cor-texto-secundario: #bdc3c7;
     --cor-fundo: #1a1a2e;
     --cor-fundo-cartao: #16213e;
     --cor-borda: #2c3e50;
     --cor-sombra: rgba(0, 0, 0, 0.3);
+    --cor-sugestao-hover: #2c3e50;
+}
+
+body.tema-escuro .titulo {
+    color:var(--cor-titulo);
+}
+
+body.tema-escuro .temperaturas-dia {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* ========== FUNDO DINÂMICO ========== */
@@ -81,9 +94,18 @@ body.tema-escuro {
     background: linear-gradient(135deg, #232526 0%, #414345 100%);
 }
 
+/* CORREÇÃO: Título visível no fundo noturno */
+.fundo-dinamico[class*="noite"] ~ .container .titulo {
+    color: #ffffff;
+}
+
+.fundo-dinamico[class*="noite"] ~ .container .icone-titulo {
+    color: #ffd966;
+}
+
 /* ========== CONTAINER PRINCIPAL ========== */
 .container {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     padding: calc(var(--espacamento-base) * 3);
     position: relative;
@@ -111,6 +133,10 @@ body.tema-escuro {
 .icone-titulo {
     font-size: 2.5rem;
     color: var(--cor-primaria);
+}
+
+body.tema-escuro .icone-titulo {
+    color: #ffd966;  /* Amarelo mais suave para destacar no escuro */
 }
 
 .botao-tema {
@@ -152,10 +178,16 @@ body.tema-escuro {
 .container-busca {
     display: flex;
     gap: calc(var(--espacamento-base) * 2);
+    position: relative;
+}
+
+.autocomplete-wrapper {
+    flex: 1;
+    position: relative;
 }
 
 .input-busca {
-    flex: 1;
+    width: 100%;
     padding: calc(var(--espacamento-base) * 2);
     font-size: 1rem;
     border: 2px solid var(--cor-borda);
@@ -173,6 +205,55 @@ body.tema-escuro {
 }
 
 .input-busca::placeholder {
+    color: var(--cor-texto-secundario);
+}
+
+/* Autocomplete */
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--cor-fundo-cartao);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius);
+    margin-top: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 12px var(--cor-sombra);
+}
+
+.autocomplete-suggestion {
+    padding: calc(var(--espacamento-base) * 2) calc(var(--espacamento-base) * 3);
+    cursor: pointer;
+    transition: var(--transicao);
+    border-bottom: 1px solid var(--cor-borda);
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base) * 2);
+}
+
+.autocomplete-suggestion:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-suggestion:hover {
+    background: var(--cor-sugestao-hover);
+}
+
+.autocomplete-suggestion i {
+    color: var(--cor-primaria);
+    font-size: 1.2rem;
+}
+
+.autocomplete-suggestion .sugestao-nome {
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+.autocomplete-suggestion .sugestao-local {
+    font-size: 0.85rem;
     color: var(--cor-texto-secundario);
 }
 
@@ -274,6 +355,41 @@ body.tema-escuro {
     padding: calc(var(--espacamento-base) * 4);
     box-shadow: 0 8px 32px var(--cor-sombra);
     border: 1px solid var(--cor-borda);
+    margin-bottom: calc(var(--espacamento-base) * 3);
+}
+
+/* ========== TEMPERATURAS MÁX/MÍN DO DIA ========== */
+.temperaturas-dia {
+    display: flex;
+    justify-content: center;
+    gap: calc(var(--espacamento-base) * 4);
+    margin-bottom: calc(var(--espacamento-base) * 3);
+    padding: calc(var(--espacamento-base) * 2);
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: calc(var(--border-radius) / 2);
+}
+
+.temp-max, .temp-min {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base));
+    font-size: 1.1rem;
+    color: var(--cor-texto-secundario);
+}
+
+.temp-max i, .temp-min i {
+    font-size: 1.3rem;
+    color: var(--cor-primaria);
+}
+
+.temp-max strong {
+    color: #e74c3c;
+    font-size: 1.3rem;
+}
+
+.temp-min strong {
+    color: #3498db;
+    font-size: 1.3rem;
 }
 
 .localizacao {
@@ -339,7 +455,7 @@ body.tema-escuro {
 
 .detalhes-clima {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: calc(var(--espacamento-base) * 3);
     margin-bottom: calc(var(--espacamento-base) * 4);
     padding: calc(var(--espacamento-base) * 3) 0;
@@ -379,6 +495,7 @@ body.tema-escuro {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
     gap: calc(var(--espacamento-base) * 2);
     color: var(--cor-texto-secundario);
     font-size: 1rem;
@@ -386,6 +503,100 @@ body.tema-escuro {
 
 .data-hora i {
     font-size: 1.2rem;
+}
+
+
+/* ========== PREVISÃO SEMANAL ========== */
+.previsao-semanal {
+    background: var(--cor-fundo-cartao);
+    border-radius: var(--border-radius);
+    padding: calc(var(--espacamento-base) * 4);
+    box-shadow: 0 8px 32px var(--cor-sombra);
+    border: 1px solid var(--cor-borda);
+}
+
+.previsao-titulo {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--espacamento-base) * 2);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--cor-texto);
+    margin-bottom: calc(var(--espacamento-base) * 3);
+    padding-bottom: calc(var(--espacamento-base) * 2);
+    border-bottom: 2px solid var(--cor-primaria);
+}
+
+.previsao-titulo i {
+    color: var(--cor-primaria);
+    font-size: 1.4rem;
+}
+
+.previsao-lista {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--espacamento-base) * 2);
+}
+
+.previsao-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: calc(var(--espacamento-base) * 2);
+    border-radius: calc(var(--border-radius) / 2);
+    background: var(--cor-fundo);
+    transition: var(--transicao);
+}
+
+.previsao-item:hover {
+    transform: translateX(5px);
+    background: rgba(74, 144, 226, 0.1);
+}
+
+.previsao-dia {
+    min-width: 100px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.previsao-dia .dia-semana {
+    font-size: 1rem;
+}
+
+.previsao-dia .dia-data {
+    font-size: 0.75rem;
+    color: var(--cor-texto-secundario);
+}
+
+.previsao-icone {
+    font-size: 1.8rem;
+    color: var(--cor-primaria);
+    min-width: 50px;
+    text-align: center;
+}
+
+.previsao-temperaturas {
+    display: flex;
+    gap: calc(var(--espacamento-base) * 2);
+    min-width: 100px;
+    justify-content: flex-end;
+}
+
+.previsao-max {
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+.previsao-min {
+    color: var(--cor-texto-secundario);
+}
+
+.previsao-descricao {
+    flex: 1;
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--cor-texto-secundario);
+    margin-left: calc(var(--espacamento-base) * 2);
 }
 
 /* ========== RODAPÉ ========== */
@@ -474,7 +685,20 @@ body.tema-escuro {
     }
 
     .detalhes-clima {
+        grid-template-columns: repeat(2, 1fr);
         gap: calc(var(--espacamento-base) * 2);
+    }
+
+    .previsao-item {
+        flex-wrap: wrap;
+        gap: calc(var(--espacamento-base));
+    }
+
+    .previsao-descricao {
+        width: 100%;
+        text-align: left;
+        margin-left: 0;
+        margin-top: calc(var(--espacamento-base));
     }
 }
 
@@ -551,6 +775,14 @@ body.tema-escuro {
 
     .cartao-clima {
         padding: calc(var(--espacamento-base) * 3);
+    }
+
+    .previsao-temperaturas {
+        min-width: auto;
+    }
+
+    .previsao-dia {
+        min-width: 80px;
     }
 }
 

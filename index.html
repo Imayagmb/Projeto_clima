@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
     <div class="fundo-dinamico" id="fundoDinamico"></div>
 
@@ -29,14 +31,11 @@
 
         <section class="secao-busca">
             <div class="container-busca">
-                <input
-                    type="text"
-                    id="campoCidade"
-                    class="input-busca"
-                    placeholder="Digite o nome da cidade ..."
-                    autocomplete="off"
-                    aria-label="Nome da cidade"
-                >
+                <div class="autocomplete-wrapper">
+                    <input type="text" id="campoCidade" class="input-busca" placeholder="Digite o nome da cidade ..."
+                        autocomplete="off" aria-label="Nome da cidade">
+                    <div class="autocomplete-suggestions" id="autocompleteSugestoes"></div>
+                </div>
                 <button class="botao-busca" id="botaoBusca" aria-label="Buscar">
                     <i class="wi wi-day-sunny"></i>
                 </button>
@@ -73,6 +72,18 @@
 
                 <p class="descricao-clima" id="descricaoClima"></p>
 
+                <!-- Temperaturas máxima e mínima do dia -->
+                <div class="temperaturas-dia">
+                    <div class="temp-max">
+                        <i class="wi wi-thermometer"></i>
+                        <span>Máx: <strong id="tempMaxDia">--</strong>°C</span>
+                    </div>
+                    <div class="temp-min">
+                        <i class="wi wi-thermometer"></i>
+                        <span>Mín: <strong id="tempMinDia">--</strong>°C</span>
+                    </div>
+                </div>
+
                 <div class="detalhes-clima">
                     <div class="detalhe-item">
                         <i class="wi wi-strong-wind"></i>
@@ -89,12 +100,31 @@
                             <span class="detalhe-valor" id="umidade"></span>
                         </div>
                     </div>
-                </div>
 
-                <div class="data-hora">
-                    <i class="wi wi-time-3"></i>
-                    <span id="dataHora"></span>
+                    <!-- Sensação Térmica - AGORA DENTRO DO detalhes-clima -->
+                    <div class="detalhe-item">
+                        <i class="wi wi-thermometer"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Sensação Térmica</span>
+                            <span class="detalhe-valor" id="sensacaoTermica"></span>
+                        </div>
+                    </div>
                 </div>
+                <div class="data-hora-wrapper">
+                    <div class="data-hora">
+                        <i class="wi wi-time-3"></i>
+                        <span id="dataHora"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previsão dos próximos 7 dias -->
+            <div class="previsao-semanal oculto" id="previsaoSemanal">
+                <h3 class="previsao-titulo">
+                    <i class="wi wi-cloudy"></i>
+                    PRÓXIMOS 7 DIAS
+                </h3>
+                <div class="previsao-lista" id="previsaoLista"></div>
             </div>
         </section>
 
@@ -105,4 +135,5 @@
 
     <script src="./assets/js/api.js"></script>
 </body>
+
 </html>
