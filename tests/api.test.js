@@ -1,3 +1,5 @@
+// tests/api.test.js
+
 // ========== MOCKS GLOBAIS — devem existir ANTES do require ==========
 // O Jest roda em Node.js, que não possui localStorage nem document.
 // GerenciadorTema e GerenciadorFundo são instanciados no carregamento
@@ -32,6 +34,8 @@ const {
     buscarPrevisaoCompleta,
     obterInformacoesClima,
     formatarDataHora,
+    formatarHorario,
+    classificarUV,
     validateCityInput,
     getWeatherDescription
 } = require('../assets/js/api');
@@ -66,7 +70,11 @@ const mockClimaResposta = {
         time:               ['2026-04-01','2026-04-02','2026-04-03','2026-04-04','2026-04-05','2026-04-06','2026-04-07','2026-04-08'],
         weathercode:        [1, 2, 3, 61, 80, 1, 0, 2],
         temperature_2m_max: [28, 26, 24, 20, 22, 27, 30, 25],
-        temperature_2m_min: [18, 17, 16, 15, 14, 16, 19, 17]
+        temperature_2m_min: [18, 17, 16, 15, 14, 16, 19, 17],
+        precipitation_probability_max: [10, 20, 40, 80, 70, 5, 0, 15],
+        sunrise:            ['2026-04-01T06:23', '2026-04-02T06:24'],
+        sunset:             ['2026-04-01T18:05', '2026-04-02T18:04'],
+        uv_index_max:       [6.5, 7.0, 4.2, 2.0, 3.1, 8.0, 11.5, 5.0]
     }
 };
 
@@ -123,19 +131,24 @@ describe('3.6 — Testes Básicos', () => {
             const resultado = await buscarClima(-23.5505, -46.6333);
 
             expect(resultado).toMatchObject({
-                temperatura:      22.5,
-                velocidadeVento:  15.3,
-                codigoClima:      1,
-                tempMaxDia:       28,
-                tempMinDia:       18,
-                umidade:          expect.any(Number),
-                sensacaoTermica:  expect.any(Number),
-                previsaoSeteDias: expect.arrayContaining([
+                temperatura:        22.5,
+                velocidadeVento:    15.3,
+                codigoClima:        1,
+                tempMaxDia:         28,
+                tempMinDia:         18,
+                probabilidadeChuva: 10,
+                nascerSol:          '2026-04-01T06:23',
+                porSol:             '2026-04-01T18:05',
+                indiceUV:           6.5,
+                umidade:            expect.any(Number),
+                sensacaoTermica:    expect.any(Number),
+                previsaoSeteDias:   expect.arrayContaining([
                     expect.objectContaining({
-                        data: expect.any(String),
-                        codigoClima:    expect.any(Number),
-                        temperaturaMax: expect.any(Number),
-                        temperaturaMin: expect.any(Number)
+                        data:               expect.any(String),
+                        codigoClima:        expect.any(Number),
+                        temperaturaMax:     expect.any(Number),
+                        temperaturaMin:     expect.any(Number),
+                        probabilidadeChuva: expect.any(Number)
                     })
                 ])
             });
@@ -152,10 +165,12 @@ describe('3.6 — Testes Básicos', () => {
             const resultado = await buscarPrevisaoCompleta('Campinas');
 
             expect(resultado).toMatchObject({
-                nome:            'São Paulo', // retornado pelo mock
-                latitude:        expect.any(Number),
-                temperatura:     expect.any(Number),
-                previsaoSeteDias: expect.any(Array)
+                nome:               'São Paulo', // retornado pelo mock
+                latitude:           expect.any(Number),
+                temperatura:        expect.any(Number),
+                probabilidadeChuva: expect.any(Number),
+                indiceUV:           expect.any(Number),
+                previsaoSeteDias:   expect.any(Array)
             });
         });
 
@@ -294,6 +309,10 @@ describe('3.7 — Casos Extremos', () => {
 
             expect(resultado.tempMaxDia).toBeNull();
             expect(resultado.tempMinDia).toBeNull();
+            expect(resultado.probabilidadeChuva).toBeNull();
+            expect(resultado.nascerSol).toBeNull();
+            expect(resultado.porSol).toBeNull();
+            expect(resultado.indiceUV).toBeNull();
             expect(resultado.previsaoSeteDias).toHaveLength(0);
         });
 
@@ -364,6 +383,90 @@ describe('3.7 — Casos Extremos', () => {
             const resultado = formatarDataHora(dataString);
             expect(typeof resultado).toBe('string');
             expect(resultado).toContain(anoEsperado);
+        });
+    });
+});
+
+// =============================================================
+// 5.0 — NOVOS CAMPOS: classificarUV e formatarHorario
+// =============================================================
+describe('5.0 — Novos campos: classificarUV e formatarHorario', () => {
+
+    describe('classificarUV — níveis e classes CSS', () => {
+
+        test.each([
+            [0,    'Baixo',      'uv-baixo'     ],
+            [2,    'Baixo',      'uv-baixo'     ],
+            [3,    'Moderado',   'uv-moderado'  ],
+            [5,    'Moderado',   'uv-moderado'  ],
+            [6,    'Alto',       'uv-alto'      ],
+            [7,    'Alto',       'uv-alto'      ],
+            [8,    'Muito alto', 'uv-muito-alto'],
+            [10,   'Muito alto', 'uv-muito-alto'],
+            [11,   'Extremo',    'uv-extremo'   ],
+            [15,   'Extremo',    'uv-extremo'   ]
+        ])('UV %d → nível "%s" e classe "%s"', (uv, nivel, classe) => {
+            const resultado = classificarUV(uv);
+            expect(resultado.nivel).toBe(nivel);
+            expect(resultado.classe).toBe(classe);
+        });
+
+        test.each([
+            ['null',      null     ],
+            ['undefined', undefined]
+        ])('UV %s retorna N/D e classe vazia', (_, valor) => {
+            const resultado = classificarUV(valor);
+            expect(resultado.nivel).toBe('N/D');
+            expect(resultado.classe).toBe('');
+        });
+    });
+
+    describe('formatarHorario — conversão ISO para HHhMM', () => {
+
+        test('horário válido retorna string no formato HHhMM', () => {
+            expect(formatarHorario('2026-04-01T06:23')).toMatch(/^\d{2}h\d{2}$/);
+        });
+
+        test.each([
+            ['null',      null     ],
+            ['undefined', undefined]
+        ])('%s retorna N/D', (_, valor) => {
+            expect(formatarHorario(valor)).toBe('N/D');
+        });
+    });
+
+    describe('buscarClima — campos novos com dados simulados', () => {
+
+        test('indiceUV retorna valor numérico correto quando disponível', async () => {
+            fetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockClimaResposta) });
+
+            const resultado = await buscarClima(-23.5505, -46.6333);
+
+            expect(typeof resultado.indiceUV).toBe('number');
+            expect(resultado.indiceUV).toBe(6.5);
+        });
+
+        test('nascerSol e porSol são strings ISO quando disponíveis', async () => {
+            fetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockClimaResposta) });
+
+            const resultado = await buscarClima(-23.5505, -46.6333);
+
+            expect(resultado.nascerSol).toMatch(/T\d{2}:\d{2}/);
+            expect(resultado.porSol).toMatch(/T\d{2}:\d{2}/);
+        });
+
+        test('probabilidadeChuva da previsão semanal é null quando campo ausente na API', async () => {
+            const respostaSemChuva = {
+                ...mockClimaResposta,
+                daily: { ...mockClimaResposta.daily, precipitation_probability_max: undefined }
+            };
+            fetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(respostaSemChuva) });
+
+            const resultado = await buscarClima(-23.5505, -46.6333);
+
+            resultado.previsaoSeteDias.forEach(dia => {
+                expect(dia.probabilidadeChuva).toBeNull();
+            });
         });
     });
 });
