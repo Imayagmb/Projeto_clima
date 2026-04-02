@@ -57,11 +57,14 @@
 
         <section class="area-resultados oculto" id="areaResultados">
             <div class="cartao-clima">
+
+                <!-- Localização -->
                 <div class="localizacao">
                     <i class="wi wi-location-arrow"></i>
                     <h2 id="nomeCidade"></h2>
                 </div>
 
+                <!-- Temperatura principal + ícone -->
                 <div class="clima-principal">
                     <i class="icone-clima" id="iconeClima"></i>
                     <div class="temperatura-principal">
@@ -72,7 +75,7 @@
 
                 <p class="descricao-clima" id="descricaoClima"></p>
 
-                <!-- Temperaturas máxima e mínima do dia -->
+                <!-- Máx / Mín do dia -->
                 <div class="temperaturas-dia">
                     <div class="temp-max">
                         <i class="wi wi-thermometer"></i>
@@ -84,6 +87,7 @@
                     </div>
                 </div>
 
+                <!-- Detalhes linha 1: Vento · Umidade · Sensação -->
                 <div class="detalhes-clima">
                     <div class="detalhe-item">
                         <i class="wi wi-strong-wind"></i>
@@ -92,7 +96,6 @@
                             <span class="detalhe-valor" id="velocidadeVento"></span>
                         </div>
                     </div>
-
                     <div class="detalhe-item">
                         <i class="wi wi-humidity"></i>
                         <div class="detalhe-conteudo">
@@ -100,16 +103,49 @@
                             <span class="detalhe-valor" id="umidade"></span>
                         </div>
                     </div>
-
-                    <!-- Sensação Térmica - AGORA DENTRO DO detalhes-clima -->
                     <div class="detalhe-item">
                         <i class="wi wi-thermometer"></i>
                         <div class="detalhe-conteudo">
-                            <span class="detalhe-label">Sensação Térmica</span>
+                            <span class="detalhe-label">Sensação</span>
                             <span class="detalhe-valor" id="sensacaoTermica"></span>
                         </div>
                     </div>
                 </div>
+
+                <!-- Detalhes linha 2: Chuva · Nascer · Pôr · UV -->
+                <div class="detalhes-clima detalhes-extras">
+                    <div class="detalhe-item">
+                        <i class="wi wi-umbrella"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Chuva</span>
+                            <span class="detalhe-valor" id="probabilidadeChuva"></span>
+                        </div>
+                    </div>
+                    <div class="detalhe-item">
+                        <i class="wi wi-sunrise"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Nascer</span>
+                            <span class="detalhe-valor" id="nascerSol"></span>
+                        </div>
+                    </div>
+                    <div class="detalhe-item">
+                        <i class="wi wi-sunset"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Pôr do sol</span>
+                            <span class="detalhe-valor" id="porSol"></span>
+                        </div>
+                    </div>
+                    <div class="detalhe-item detalhe-uv">
+                        <i class="wi wi-day-sunny"></i>
+                        <div class="detalhe-conteudo">
+                            <span class="detalhe-label">Índice UV</span>
+                            <span class="detalhe-valor" id="indiceUV"></span>
+                            <span class="uv-nivel" id="indiceUVNivel"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data e hora -->
                 <div class="data-hora-wrapper">
                     <div class="data-hora">
                         <i class="wi wi-time-3"></i>
@@ -118,7 +154,7 @@
                 </div>
             </div>
 
-            <!-- Previsão dos próximos 7 dias -->
+            <!-- Previsão 7 dias -->
             <div class="previsao-semanal oculto" id="previsaoSemanal">
                 <h3 class="previsao-titulo">
                     <i class="wi wi-cloudy"></i>
